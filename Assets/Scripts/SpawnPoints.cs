@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnPoints : MonoBehaviour 
 {	public Transform [] spawnPoints;	// the spawnpoints for where the enemies will be spawning
-	public GameObject enemy;			//the gameobject that contains the enemy.
-	private int maxEnemies = 0;
+	public GameObject  enemy;			//the gameobject that contains the enemy.
+	public  List<GameObject> enemies;
+	private int maxEnemies = 3;
+	public float spawnTime = 5f;
+
 	// Use this for initialization
 	void Start () 
 	{	
-		
-	
+		InvokeRepeating("Spawn",spawnTime,spawnTime);
+		enemies = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -19,10 +23,10 @@ public class SpawnPoints : MonoBehaviour
 		{
 			Spawn();
 		}
-
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
-			maxEnemies--;
+			Destroy(enemies[0]);
+			enemies.RemoveAt(0);
 		}
 	}
 
@@ -32,8 +36,8 @@ public class SpawnPoints : MonoBehaviour
 		{
 			//instantiates the enemy gameobject and puts it into the position of the spawnpoints.
 			//random.range picks one of the spawnpoints at random and that is where the enemy is spawned.
-			Instantiate(enemy,spawnPoints[Random.Range(0,5)].position, transform.rotation);
-
+			GameObject newEnemy = Instantiate(enemy,spawnPoints[Random.Range(0,spawnPoints.Length)].position, transform.rotation) as GameObject;
+			enemies.Add (newEnemy);
 		}
 		maxEnemies++;
 	}
