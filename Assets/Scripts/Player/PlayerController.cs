@@ -2,52 +2,39 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	
-	private float Movespeed = 0.1f;
-	private float jumpSpeed = 10.0f;
 
-	private bool canJump = false;
-
+	public Transform cam;
+	private float Movespeed = 50.0f;
 	public float mouseSensivity = 5.0f;
+	private CharacterController cc;
 	private bool lockedRot = false;
-	MouseLook looking;
 
 	void Start () 
 	{
-		looking = GetComponent<MouseLook> ();
+		cc = GetComponent<CharacterController> ();
 	}
 
 	void Update () 
 	{
-		Debug.Log (canJump);
-
 		if (Input.GetKeyDown (KeyCode.G))
 			lockedRot = lockedRot == false ? true : false;
 
-		if (lockedRot == false)
-			looking.enabled = true;
-		 else
-			looking.enabled = false;
+		if(lockedRot == false)
+		{
+			//Rotation
+			float rotLeftRight = Input.GetAxis ("Mouse X") * mouseSensivity;
+			//float upDown = Input.GetAxis ("Mouse Y") * mouseSensivity;
+			transform.Rotate (0, rotLeftRight, 0);
+		}
 	
 		//Movement
-		if (Input.GetKey (KeyCode.W))
-			this.transform.Translate (Vector3.forward * Movespeed);
-		if (Input.GetKey (KeyCode.A))
-			this.transform.Translate (Vector3.left * Movespeed);
-		if (Input.GetKey (KeyCode.S))
-			this.transform.Translate (Vector3.back * Movespeed);
-		if (Input.GetKey (KeyCode.D))
-			this.transform.Translate (Vector3.right * Movespeed);
+		float horizontal = Input.GetAxis ("Horizontal") * Movespeed;
+		float vertical = Input.GetAxis ("Vertical") * Movespeed;
+		 
+		Vector3 speed = new Vector3 (horizontal, 0, vertical);
 
-		if (Input.GetKeyDown (KeyCode.Space) && canJump == true)
-		{
-			rigidbody.AddForce (0,200,0);
-			canJump = false;
-		}
-	}
+		speed = transform.rotation * speed;
 
-	void OnCollisionEnter(Collision other)
-	{
-		canJump = true;
+		cc.Move (speed * Time.deltaTime);
 	}
 }

@@ -2,10 +2,7 @@
 using System.Collections;
 
 public class Building : MonoBehaviour {
-
-	CameraFollow towerBuild;
-	private int towerValue = 0;
-
+	
 	public GameObject Arrow_Tower;
 	public GameObject Arrow_Tower_Build;
 
@@ -21,24 +18,17 @@ public class Building : MonoBehaviour {
 
 	private bool ReadytoBuild = false;
 
-	void Start()
-	{
-		towerBuild = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraFollow> ();
-	}
-
 	void Update () 
 	{
-		if (Input.GetKeyDown (KeyCode.Alpha1) && buildSchematic == null && towerBuild.GoldAmmount >= 30)
+		if (Input.GetKeyDown (KeyCode.Alpha1) && buildSchematic == null)
 		{
-			towerValue = 30;
 			ReadytoBuild = ReadytoBuild == false ? true : false;
 			toBuild = Arrow_Tower;
 			buildSchematic = Arrow_Tower_Build;
 			Instantiate (buildSchematic);
 		}
-		if (Input.GetKeyDown (KeyCode.Alpha2) && buildSchematic == null && towerBuild.GoldAmmount >= 60)
+		if (Input.GetKeyDown (KeyCode.Alpha2) && buildSchematic == null)
 		{
-			towerValue = 60;
 			ReadytoBuild = ReadytoBuild == false ? true : false;
 			toBuild = Boulder_Tower;
 			buildSchematic = Boulder_Tower_Build;
@@ -62,7 +52,6 @@ public class Building : MonoBehaviour {
 			}
 			if(Input.GetKeyDown(KeyCode.Mouse1))
 			{
-				towerValue = 0;
 				ReadytoBuild = false;
 				buildSchematic = null;
 				DestroyAllObjects();
@@ -73,7 +62,7 @@ public class Building : MonoBehaviour {
 	void DestroyAllObjects()
 	{
 		Schematics = GameObject.FindGameObjectsWithTag("Schematic");
-		towerBuild.GoldAmmount -= towerValue;
+
 		for(int i = 0 ; i < Schematics.Length ; i++)
 		{
 			Destroy(Schematics[i]);
