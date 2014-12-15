@@ -11,22 +11,17 @@ public class Projectile_Boulder : MonoBehaviour {
 	
 	void Update () 
 	{
-		mySpeed -=0.005f;
-		if (mySpeed <= 0.0f)
-		{
-			Destroy (gameObject);
-			Instantiate (explosion, gameObject.transform.position, Quaternion.identity);
-		}
 		this.transform.Translate (Vector3.forward * mySpeed);
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.tag == "Enemy")
+		if (other.gameObject.tag.Contains("Enemy"))
 		{
 			Instantiate (explosion, other.gameObject.transform.position, Quaternion.identity);
-			Destroy (gameObject);
-			Destroy(other.gameObject);
+			Destroy (this.gameObject);
 		}
+		else
+			Destroy(this.gameObject);
 	}
 }

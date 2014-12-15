@@ -22,9 +22,9 @@ public class ArrowTower : MonoBehaviour {
 	}
 
 	void Update () 
-	{		
+	{
 		this.transform.LookAt (myTarget);
-		coll.radius = 7.0f + this.transform.position.y;
+		coll.radius = 10.0f + this.transform.position.y;
 		if (myTarget!=null)
 		{
 			if(Time.time >= nextMoveTime)
@@ -40,8 +40,8 @@ public class ArrowTower : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other)
-	{	
-		if (other.gameObject.tag == "Enemy")
+	{
+		if (other.gameObject.tag.Contains ("Enemy"))
 		{
 			nextFireTime = Time.deltaTime + (reloadTime*0.75f);
 			myTarget = other.gameObject.transform;			
@@ -51,7 +51,7 @@ public class ArrowTower : MonoBehaviour {
 	}
 	
 	void OnTriggerExit(Collider other)
-	{		
+	{
 		if (other.gameObject.transform == myTarget)
 		{
 			myTarget = null;
@@ -59,11 +59,10 @@ public class ArrowTower : MonoBehaviour {
 	}
 	
 	void CalculateAimPosition(Vector3 targetPos)
-	{		
+	{
 		Vector3 aimPoint = new Vector3(targetPos.x, targetPos.y, targetPos.z);
 		desiredRotation = Quaternion.LookRotation (aimPoint);
-	}
-	
+	}	
 	
 	void FireProjectile()
 	{
