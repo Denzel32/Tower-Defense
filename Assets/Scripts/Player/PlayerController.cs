@@ -19,7 +19,13 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () 
 	{
-		Debug.Log (canJump);
+		Debug.Log (Movespeed);
+
+		if(Input.GetKey (KeyCode.LeftShift))
+			Movespeed = 0.2f;
+
+		if (!Input.GetKey (KeyCode.LeftShift))
+			Movespeed = 0.1f;
 
 		if (Input.GetKeyDown (KeyCode.G))
 			lockedRot = lockedRot == false ? true : false;

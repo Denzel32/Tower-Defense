@@ -8,6 +8,7 @@ public class SpawnPoints : MonoBehaviour
 	public  List<GameObject> enemies;
 	private int maxEnemies = 3;
 	public float spawnTime = 5f;
+	public GameObject [] targetPoints ;
 
 	// Use this for initialization
 	void Start () 
@@ -23,11 +24,6 @@ public class SpawnPoints : MonoBehaviour
 		{
 			Spawn();
 		}
-		if(Input.GetKeyDown(KeyCode.Space))
-		{
-			Destroy(enemies[0]);
-			enemies.RemoveAt(0);
-		}
 	}
 
 	void Spawn()
@@ -37,6 +33,7 @@ public class SpawnPoints : MonoBehaviour
 			//instantiates the enemy gameobject and puts it into the position of the spawnpoints.
 			//random.range picks one of the spawnpoints at random and that is where the enemy is spawned.
 			GameObject newEnemy = Instantiate(enemy,spawnPoints[Random.Range(0,spawnPoints.Length)].position, transform.rotation) as GameObject;
+			newEnemy.GetComponent<EnemyDestination>().targets = targetPoints;
 			enemies.Add (newEnemy);
 		}
 		maxEnemies++;
